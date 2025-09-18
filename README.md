@@ -4,7 +4,7 @@
 Arduino-based Morse Code Decoder: enter dots (·) and dashes (–) using push buttons; decoded characters are shown on a 16×2 LCD (microprocessor used: Arduino Uno).
 
 ## Team
-- Amey Kumar (23070123019) []
+- Amey Kumar (23070123019) [https://github.com/Amey1022]
 - Anushka Shinde (23070123025) [https://github.com/anushka2327] 
 - Jiya Palod (23070123070) [https://github.com/jiyapalod]
 - Maitreyee Gohad (24070123509) [https://github.com/maitreyeegohad]
@@ -41,6 +41,7 @@ Arduino-based Morse Code Decoder: enter dots (·) and dashes (–) using push bu
 
 ## Detailed Project Report 
 [Report] (https://github.com/jiyapalod/Morse-Code-Decoder/tree/e6926f08e1f060444dcdcbe9e784f0a4030cd344/documents)
+
 
 
 
