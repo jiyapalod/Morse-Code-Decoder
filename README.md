@@ -26,7 +26,7 @@ Arduino-based Morse Code Decoder: enter dots (·) and dashes (–) using push bu
 - `README.md` — this file
 
 ## Demo video
-(We’ll put the YouTube/Drive link here later.)
+[Watch the demo on LinkedIn] (https://www.linkedin.com/posts/jiya-p-9b9b46285_project-milestone-unlocked-morse-code-activity-7315746468311580672-er4w?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEVnBh0Bq8HMk6Huy8Zkw-j6-VTsRR3-_SU)
 
 ## How to run
 1. Make all connections to the Arduino and LCD using a breadboard as shown in the report.
@@ -41,5 +41,6 @@ Arduino-based Morse Code Decoder: enter dots (·) and dashes (–) using push bu
 
 ## Detailed Project Report 
 [Report] (https://github.com/jiyapalod/Morse-Code-Decoder/tree/e6926f08e1f060444dcdcbe9e784f0a4030cd344/documents)
+
 
 
