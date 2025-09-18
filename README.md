@@ -35,7 +35,8 @@ Arduino-based Morse Code Decoder: enter dots (·) and dashes (–) using push bu
 4. Upload the sketch.
 
 ## Circuit Diagram
-[Circuit Diagram] ("https://github.com/jiyapalod/Morse-Code-Decoder/tree/1acee5d067d3d035f957c2d35d7724fd466290a7/schematics")
+[Circuit Diagram] (https://github.com/jiyapalod/Morse-Code-Decoder/tree/1acee5d067d3d035f957c2d35d7724fd466290a7/schematics)
 
 ## Detailed Project Report 
-[Report] (
+[Report] (https://github.com/jiyapalod/Morse-Code-Decoder/tree/e6926f08e1f060444dcdcbe9e784f0a4030cd344/documents)
+
