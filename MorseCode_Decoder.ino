@@ -5,7 +5,7 @@ const int dotBtn = 8;
 const int dashBtn = 10;
 const int ledPin = 11;
 
-const int RS = 13, EN = 12, D4 = 5, D5 = 4, D6 = 3, D7 = 2;
+const int RS = 13, EN = 12, D4 = 5, D5 = 4, D6 = 2, D7 = 3;
 LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
 // Morse data
@@ -26,9 +26,8 @@ void setup()
 {
   pinMode(dotBtn, INPUT);     // Using external pull-down resistors
   pinMode(dashBtn, INPUT);
-  pinMode(ledPin, OUTPUT);
 
-  Serial.begin(9600);
+  Serial.begin(11520);
   lcd.begin(16, 2);
   lcd.print("Morse Decoder");
   Serial.println("Morse Decoder");
@@ -91,7 +90,7 @@ String decodeMorse(String morse)
 {
   for (int i = 0; i < 26; i++) 
   {
-    if (morse == morseCode[i]) 
+    if (morse.equals(morseCode[i])) 
     {
       return String(letters[i]);
     }
