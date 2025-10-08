@@ -1,6 +1,5 @@
 #include <LiquidCrystal.h>
 
-// Pin configuration
 const int dotBtn = 8;
 const int dashBtn = 10;
 const int ledPin = 11;
@@ -8,13 +7,11 @@ const int ledPin = 11;
 const int RS = 13, EN = 12, D4 = 5, D5 = 4, D6 = 3, D7 = 2;
 LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
-// Morse data
 String morseInput = "";
 unsigned long lastPressTime = 0;
-unsigned long startTime;
+unsigned long startTime = 0;
 
-String morseCode[] = 
-{
+String morseCode[] = {
   ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....",
   "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.",
   "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-",
@@ -22,78 +19,82 @@ String morseCode[] =
 };
 char letters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-void setup() 
-{
-  pinMode(dotBtn, INPUT);     // Using external pull-down resistors
+const unsigned long debounceDelay = 50;
+unsigned long lastDotPress = 0;
+unsigned long lastDashPress = 0;
+
+void setup() {
+  pinMode(dotBtn, INPUT);
   pinMode(dashBtn, INPUT);
+  pinMode(ledPin, OUTPUT);
 
   Serial.begin(9600);
   lcd.begin(16, 2);
   lcd.print("Morse Decoder");
   Serial.println("Morse Decoder");
-  delay(3000);  // Let message display
+  delay(3000);
 
   lcd.clear();
   lcd.setCursor(0, 0);
-  startTime = millis();  // Capture initial time to avoid false decoding
+  startTime = millis();
 }
 
-void loop() 
-{
-  // Detect dot button press
-  if (digitalRead(dotBtn) == HIGH) 
-  {
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // Dot button (debounced)
+  if (digitalRead(dotBtn) == HIGH && currentMillis - lastDotPress > debounceDelay) {
     morseInput += ".";
     blinkDot();
-    lastPressTime = millis();
-    while (digitalRead(dotBtn) == HIGH); // Debounce - wait for release
+    lastPressTime = currentMillis;
+    lastDotPress = currentMillis;
   }
 
-  // Detect dash button press
-  if (digitalRead(dashBtn) == HIGH) 
-  {
+  // Dash button (debounced)
+  if (digitalRead(dashBtn) == HIGH && currentMillis - lastDashPress > debounceDelay) {
     morseInput += "-";
     blinkDash();
-    lastPressTime = millis();
-    while (digitalRead(dashBtn) == HIGH); // Debounce - wait for release
+    lastPressTime = currentMillis;
+    lastDashPress = currentMillis;
   }
 
-  // Decode if 1s has passed since last press and at least 3s after startup
-  if (morseInput.length() > 0 && millis() - lastPressTime > 1000 && millis() - startTime > 3000) 
-  {
+  if (morseInput.length() > 0 && currentMillis - lastPressTime > 1000 && currentMillis - startTime > 3000) {
     String decoded = decodeMorse(morseInput);
     Serial.print(decoded);
+    lcd.setCursor(lcdCol, lcdRow);
     lcd.print(decoded);
+    lcdCol++;
+    if (lcdCol >= 16) {
+      lcdCol = 0;
+      lcdRow++;
+      if (lcdRow >= 2) {
+        lcdRow = 0;
+        lcd.clear();
+      }
+    }
     morseInput = "";
   }
 }
 
-// LED feedback
-void blinkDot() 
-{
+void blinkDot() {
   digitalWrite(ledPin, HIGH);
   delay(200);
   digitalWrite(ledPin, LOW);
   delay(50);
 }
 
-void blinkDash() 
-{
+void blinkDash() {
   digitalWrite(ledPin, HIGH);
   delay(600);
   digitalWrite(ledPin, LOW);
   delay(50);
 }
 
-// Translate Morse code to letter
-String decodeMorse(String morse) 
-{
-  for (int i = 0; i < 26; i++) 
-  {
-    if (morse == (morseCode[i])) 
-    {
+String decodeMorse(String morse) {
+  for (int i = 0; i < 26; i++) {
+    if (morse == morseCode[i]) {
       return String(letters[i]);
     }
   }
-  return "?";  // Unknown input
+  return "?";
 }
