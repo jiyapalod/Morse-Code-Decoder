@@ -61,7 +61,17 @@ void loop() {
   if (morseInput.length() > 0 && currentMillis - lastPressTime > 1000 && currentMillis - startTime > 3000) {
     String decoded = decodeMorse(morseInput);
     Serial.print(decoded);
+    lcd.setCursor(lcdCol, lcdRow);
     lcd.print(decoded);
+    lcdCol++;
+    if (lcdCol >= 16) {
+      lcdCol = 0;
+      lcdRow++;
+      if (lcdRow >= 2) {
+        lcdRow = 0;
+        lcd.clear();
+      }
+    }
     morseInput = "";
   }
 }
