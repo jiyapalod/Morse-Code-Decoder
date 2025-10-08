@@ -9,7 +9,7 @@ LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
 String morseInput = "";
 unsigned long lastPressTime = 0;
-unsigned long startTime;
+unsigned long startTime = 0;
 
 String morseCode[] = {
   ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....",
@@ -18,6 +18,10 @@ String morseCode[] = {
   "-.--", "--.."
 };
 char letters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const unsigned long debounceDelay = 50;
+unsigned long lastDotPress = 0;
+unsigned long lastDashPress = 0;
 
 void setup() {
   pinMode(dotBtn, INPUT);
@@ -36,21 +40,25 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(dotBtn) == HIGH) {
+  unsigned long currentMillis = millis();
+
+  // Dot button (debounced)
+  if (digitalRead(dotBtn) == HIGH && currentMillis - lastDotPress > debounceDelay) {
     morseInput += ".";
     blinkDot();
-    lastPressTime = millis();
-    while (digitalRead(dotBtn) == HIGH);
+    lastPressTime = currentMillis;
+    lastDotPress = currentMillis;
   }
 
-  if (digitalRead(dashBtn) == HIGH) {
+  // Dash button (debounced)
+  if (digitalRead(dashBtn) == HIGH && currentMillis - lastDashPress > debounceDelay) {
     morseInput += "-";
     blinkDash();
-    lastPressTime = millis();
-    while (digitalRead(dashBtn) == HIGH);
+    lastPressTime = currentMillis;
+    lastDashPress = currentMillis;
   }
 
-  if (morseInput.length() > 0 && millis() - lastPressTime > 1000 && millis() - startTime > 3000) {
+  if (morseInput.length() > 0 && currentMillis - lastPressTime > 1000 && currentMillis - startTime > 3000) {
     String decoded = decodeMorse(morseInput);
     Serial.print(decoded);
     lcd.print(decoded);
